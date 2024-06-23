@@ -1,6 +1,7 @@
 #### CODE BELOW SETS UP THE BASIC AGENT ####
 
 import bs4
+import traceback
 from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain.tools.retriever import create_retriever_tool
 from langchain_chroma import Chroma
@@ -61,18 +62,28 @@ config = {"configurable": {"thread_id": "abc123"}}
 #### END CONVERSATION THREAD CONFIGURATION ####
 
 flag_stop_agent = False
+try:
+    while not flag_stop_agent:
 
-while not flag_stop_agent:
+        input_string_from_user = input("Enter message for the agent.  Type \"EXIT\" to exit: ")
 
-    input_string_from_user = input("Enter message for the agent.  Type \"EXIT\" to exit: ")
+        if input_string_from_user == "EXIT":
+            flag_stop_agent = True 
+            break
 
-    if input_string_from_user == "EXIT":
-        flag_stop_agent = True 
-        break
+        for s in agent_executor.stream({"messages": [HumanMessage(content=input_string_from_user)]}, config=config):
+            print(s['agent']['messages'][0].content)
+            print("----")
+except Exception as e:
+    traceback.print_exception(e)
+    traceback.print_exc()
+finally:
+    # VERY CRITICAL: CLOSE THE DATABASE!
+    try:
+        con.close()
+    except:
+        print("ERROR: UNABLE TO CLOSE THE SQLITE DATABASE FOR THE AGENT!")
 
-    for s in agent_executor.stream({"messages": [HumanMessage(content=input_string_from_user)]}, config=config):
-        print(s['agent']['messages'][0].content)
-        print("----")
 
 # End the while loop
 
