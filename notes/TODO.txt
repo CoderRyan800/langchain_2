@@ -1,0 +1,13 @@
+I. Agent memory
+	A. Need a good summarization memory mechanism to allow agent to load memory summary.
+	B. Need a good way to insure the agent keeps the original persona prompt so the persona doesn't drift.
+		1. Need a good way for the agent to recommend and write proposed new persona prompts as part of
+		self-editing.
+	C. In addition to allowing agent to operate on memory summary, need ability to store conversation history
+	as text in order to allow agent to search and retrieve the conversation history.
+		1. Ultimately this needs to become a SQL database system with search capability to be able
+		to organize memories and allow agent to figure out best memory organization.
+II. Agent web access
+	A. Need ability to search web and read web documentation.
+III. Agent file access
+	A. Need PDF capability.

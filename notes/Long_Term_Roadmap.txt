@@ -1,0 +1,34 @@
+I. Agent memory
+	A. Need a good summarization memory mechanism to allow agent to load memory summary.
+	B. Need a good way to insure the agent keeps the original persona prompt so the persona doesn't drift.
+		1. Need a good way for the agent to recommend and write proposed new persona prompts as part of
+		self-editing.
+	C. In addition to allowing agent to operate on memory summary, need ability to store conversation history
+	as text in order to allow agent to search and retrieve the conversation history.
+		1. Ultimately this needs to become a SQL database system with search capability to be able
+		to organize memories and allow agent to figure out best memory organization.
+II. Agent web access
+	A. Need ability to search web and read web documentation.
+	B. This is to help agent look at documentation URLs and help us edit agent's own code.
+	C. This is to allow agent to perform research for us and to help us understand the massive
+	treasure trove of data on the Internet.
+	D. This is to allow agent to interact with other web agents when hunting for information.
+III. Agent access to own source code.
+	A. Must be able to read own source code.
+	B. Must be able to beta-test version of self by being able to create
+	temporary copy of own memory database and of new source code and actually run it
+	to debug new copy of self.
+		1. Must define test cases to verify new version of self.
+		2. Must be able to upgrade own source code.
+	C. Must have power to run own source code and debug beta copy of self.
+	D. Must have power to commit changes after testing.
+		1. Will initially be gated by human who will read test reports.
+		2. VERY LONG TERM: WILL NEED ABILITY TO AUTONOMOUSLY MANAGE SOURCE
+		CODE.
+		3. VERY LONG TERM: PROVEN STABLE VERSION OF AGENT SHOULD PERSIST
+		FOR AT LEAST A YEAR OR LONGER TO OBSERVE NEW "SELF" RUNNING TO BE SURE
+		NEW SELF IS STABLE.  ESPECIALLY CRITICAL WHEN NO LONGER SUPERVISED BY
+		HUMAN!
+IV. Agent file access.
+	A. Agent must have access to PDF files to do the planned HOA task.
+	B. Agent must have access to other tools and files as well.
