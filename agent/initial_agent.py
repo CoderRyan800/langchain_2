@@ -52,8 +52,8 @@ except:
     fp.close()
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-splits = text_splitter.split_documents(docs)
-#splits = text_splitter.create_documents([conversation_data])
+#splits = text_splitter.split_documents(docs)
+splits = text_splitter.create_documents([conversation_data])
 vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings())
 
 
