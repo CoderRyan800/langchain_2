@@ -94,10 +94,16 @@ try:
             break
 
         for s in agent_executor.stream({"messages": [HumanMessage(content=input_string_from_user)]}, config=config):
-            agent_message = s['agent']['messages'][0].content
-            print(s['agent']['messages'][0].content)
+            
             fp.write("HUMAN: %s\n" % (input_string_from_user,))
-            fp.write("AGENT: %s\n" % (agent_message,))
+            try:
+                agent_message = s['agent']['messages'][0].content
+                print(agent_message)
+                fp.write("AGENT: %s\n" % (agent_message,))
+            except:
+                print(repr(s))
+
+            
             print("----")
 except Exception as e:
     traceback.print_exception(e)
