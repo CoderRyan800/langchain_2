@@ -37,17 +37,36 @@ loader = WebBaseLoader(
 )
 docs = loader.load()
 
+conversation_history_filename = 'Conversation_History.txt'
+
+try:
+    fp = open(conversation_history_filename,'r')
+    conversation_data = fp.read()
+    fp.close()
+except:
+    fp = open(conversation_history_filename,'w')
+    fp.write("BEGIN CONVERSATION HISTORY\n")
+    fp.close()
+    fp = open(conversation_history_filename,'r')
+    conversation_data = fp.read()
+    fp.close()
+
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 splits = text_splitter.split_documents(docs)
+#splits = text_splitter.create_documents([conversation_data])
 vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings())
+
+
+
+
 retriever = vectorstore.as_retriever()
 
 
 ### Build retriever tool ###
 tool = create_retriever_tool(
     retriever,
-    "blog_post_retriever",
-    "Searches and returns excerpts from the Autonomous Agents blog post.",
+    "data_retriever",
+    "Searches and returns long-term information",
 )
 tools = [tool]
 
@@ -62,6 +81,9 @@ config = {"configurable": {"thread_id": "abc123"}}
 #### END CONVERSATION THREAD CONFIGURATION ####
 
 flag_stop_agent = False
+
+fp = open(conversation_history_filename,'a')
+
 try:
     while not flag_stop_agent:
 
@@ -72,7 +94,10 @@ try:
             break
 
         for s in agent_executor.stream({"messages": [HumanMessage(content=input_string_from_user)]}, config=config):
+            agent_message = s['agent']['messages'][0].content
             print(s['agent']['messages'][0].content)
+            fp.write("HUMAN: %s\n" % (input_string_from_user,))
+            fp.write("AGENT: %s\n" % (agent_message,))
             print("----")
 except Exception as e:
     traceback.print_exception(e)
@@ -81,6 +106,7 @@ finally:
     # VERY CRITICAL: CLOSE THE DATABASE!
     try:
         con.close()
+        fp.close()
     except:
         print("ERROR: UNABLE TO CLOSE THE SQLITE DATABASE FOR THE AGENT!")
 
